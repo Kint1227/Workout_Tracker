@@ -38,7 +38,7 @@ const Workouts = () => {
     };
 
     if (editingWorkout) {
-      const updated = storageService.updateWorkout(editingWorkout.id, workoutData);
+      storageService.updateWorkout(editingWorkout.id, workoutData);
       setWorkouts(storageService.getWorkouts());
     } else {
       storageService.addWorkout(workoutData);
@@ -81,9 +81,15 @@ const Workouts = () => {
     setWorkouts(storageService.getWorkouts());
   };
 
-  const filteredWorkouts = selectedCategory === 'All' 
-    ? workouts 
-    : workouts.filter(workout => workout.category === selectedCategory);
+  const deleteWorkout = (id) => {
+    storageService.deleteWorkout(id);
+    setWorkouts(storageService.getWorkouts());
+  };
+
+  const filteredWorkouts =
+    selectedCategory === 'All'
+      ? workouts
+      : workouts.filter((workout) => workout.category === selectedCategory);
 
   const pageStyle = {
     padding: '2rem',
@@ -152,22 +158,25 @@ const Workouts = () => {
             Track and manage your fitness activities
           </p>
         </div>
-        <button 
-          className="btn btn-primary"
-          onClick={() => setShowForm(!showForm)}
-        >
+        <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
           {showForm ? 'Cancel' : '+ Add Workout'}
         </button>
       </div>
 
-      {/* Add/Edit Workout Form */}
       {showForm && (
         <div style={formStyle}>
           <h3 style={{ marginBottom: '1.5rem', color: '#2c3e50' }}>
             {editingWorkout ? 'Edit Workout' : 'Add New Workout'}
           </h3>
           <form onSubmit={handleSubmit}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '1rem',
+                marginBottom: '1rem'
+              }}
+            >
               <div className="form-group">
                 <label className="form-label">Workout Name</label>
                 <input
@@ -178,7 +187,7 @@ const Workouts = () => {
                   required
                 />
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">Category</label>
                 <select
@@ -188,12 +197,14 @@ const Workouts = () => {
                   required
                 >
                   <option value="">Select Category</option>
-                  {categories.map(category => (
-                    <option key={category} value={category}>{category}</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
                   ))}
                 </select>
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">Duration (minutes)</label>
                 <input
@@ -204,7 +215,7 @@ const Workouts = () => {
                   required
                 />
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">Calories Burned</label>
                 <input
@@ -214,7 +225,7 @@ const Workouts = () => {
                   onChange={(e) => setFormData({ ...formData, calories: e.target.value })}
                 />
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">Date</label>
                 <input
@@ -226,7 +237,7 @@ const Workouts = () => {
                 />
               </div>
             </div>
-            
+
             <div className="form-group">
               <label className="form-label">Notes</label>
               <textarea
@@ -236,7 +247,7 @@ const Workouts = () => {
                 placeholder="Add any notes about your workout..."
               />
             </div>
-            
+
             <div style={{ display: 'flex', gap: '1rem' }}>
               <button type="submit" className="btn btn-primary">
                 {editingWorkout ? 'Update Workout' : 'Add Workout'}
@@ -249,7 +260,6 @@ const Workouts = () => {
         </div>
       )}
 
-      {/* Category Filters */}
       <div style={filterStyle}>
         <button
           style={filterButtonStyle(selectedCategory === 'All')}
@@ -257,8 +267,8 @@ const Workouts = () => {
         >
           All ({workouts.length})
         </button>
-        {categories.map(category => {
-          const count = workouts.filter(w => w.category === category).length;
+        {categories.map((category) => {
+          const count = workouts.filter((w) => w.category === category).length;
           return (
             <button
               key={category}
@@ -271,7 +281,6 @@ const Workouts = () => {
         })}
       </div>
 
-      {/* Workouts Grid */}
       {filteredWorkouts.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '3rem', color: '#6c757d' }}>
           <h3>No workouts found</h3>
@@ -281,20 +290,27 @@ const Workouts = () => {
         <div style={workoutGridStyle}>
           {filteredWorkouts
             .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .map(workout => (
+            .map((workout) => (
               <div key={workout.id} style={workoutCardStyle}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    marginBottom: '1rem'
+                  }}
+                >
                   <div>
-                    <h3 style={{ margin: '0 0 0.5rem 0', color: '#2c3e50' }}>
-                      {workout.name}
-                    </h3>
-                    <span style={{
-                      background: '#007bff',
-                      color: 'white',
-                      padding: '0.25rem 0.75rem',
-                      borderRadius: '15px',
-                      fontSize: '0.8rem'
-                    }}>
+                    <h3 style={{ margin: '0 0 0.5rem 0', color: '#2c3e50' }}>{workout.name}</h3>
+                    <span
+                      style={{
+                        background: '#007bff',
+                        color: 'white',
+                        padding: '0.25rem 0.75rem',
+                        borderRadius: '15px',
+                        fontSize: '0.8rem'
+                      }}
+                    >
                       {workout.category}
                     </span>
                   </div>
@@ -312,10 +328,6 @@ const Workouts = () => {
                     </button>
                     <button
                       onClick={() => deleteWorkout(workout.id)}
-                      onClick={() => {
-                        storageService.deleteWorkout(workout.id);
-                        setWorkouts(storageService.getWorkouts());
-                      }}
                       style={{
                         background: 'none',
                         border: 'none',
@@ -327,7 +339,7 @@ const Workouts = () => {
                     </button>
                   </div>
                 </div>
-                
+
                 <div style={{ marginBottom: '1rem' }}>
                   <p style={{ margin: '0.25rem 0', color: '#495057' }}>
                     📅 {format(parseISO(workout.date), 'MMM dd, yyyy')}
@@ -341,18 +353,20 @@ const Workouts = () => {
                     </p>
                   )}
                 </div>
-                
+
                 {workout.notes && (
-                  <p style={{ 
-                    color: '#6c757d', 
-                    fontSize: '0.9rem', 
-                    marginBottom: '1rem',
-                    fontStyle: 'italic'
-                  }}>
+                  <p
+                    style={{
+                      color: '#6c757d',
+                      fontSize: '0.9rem',
+                      marginBottom: '1rem',
+                      fontStyle: 'italic'
+                    }}
+                  >
                     "{workout.notes}"
                   </p>
                 )}
-                
+
                 <button
                   onClick={() => toggleComplete(workout)}
                   className={workout.completed ? 'btn btn-secondary' : 'btn btn-outline'}
