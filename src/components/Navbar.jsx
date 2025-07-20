@@ -124,6 +124,60 @@ const Navbar = () => {
               Blog
             </Link>
           </li>
+          <li>
+            <Link 
+              to="/dashboard" 
+              style={location.pathname === '/dashboard' ? activeLinkStyle : linkStyle}
+              onClick={() => setIsOpen(false)}
+            >
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/workouts" 
+              style={location.pathname === '/workouts' ? activeLinkStyle : linkStyle}
+              onClick={() => setIsOpen(false)}
+            >
+              Workouts
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/goals" 
+              style={location.pathname === '/goals' ? activeLinkStyle : linkStyle}
+              onClick={() => setIsOpen(false)}
+            >
+              Goals
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/progress" 
+              style={location.pathname === '/progress' ? activeLinkStyle : linkStyle}
+              onClick={() => setIsOpen(false)}
+            >
+              Progress
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/exercises" 
+              style={location.pathname === '/exercises' ? activeLinkStyle : linkStyle}
+              onClick={() => setIsOpen(false)}
+            >
+              Exercises
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/nutrition" 
+              style={location.pathname === '/nutrition' ? activeLinkStyle : linkStyle}
+              onClick={() => setIsOpen(false)}
+            >
+              Nutrition
+            </Link>
+          </li>
         </ul>
 
         <div 
